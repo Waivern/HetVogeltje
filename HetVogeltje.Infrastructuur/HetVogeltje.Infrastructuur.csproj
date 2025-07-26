@@ -18,4 +18,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HetVogeltje.Domein\HetVogeltje.Domein.csproj" />
+  </ItemGroup>
+
 </Project>
