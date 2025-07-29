@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36310.24 d17.14
+VisualStudioVersion = 17.14.36310.24
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HetVogeltje.Web", "HetVogeltje.Web\HetVogeltje.Web.csproj", "{A8719915-6DE4-4557-99C0-24A2F849F9E0}"
 EndProject
@@ -10,6 +10,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HetVogeltje.Application", "HetVogeltje.Application\HetVogeltje.Application.csproj", "{9DB01296-0899-4014-8AD0-2CBA0AE9792A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HetVogeltje.Infrastructuur", "HetVogeltje.Infrastructuur\HetVogeltje.Infrastructuur.csproj", "{823DC8C4-1648-4A8C-9D93-299EE3BA290E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
