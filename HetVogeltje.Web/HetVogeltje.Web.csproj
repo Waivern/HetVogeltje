@@ -18,4 +18,8 @@
     <ProjectReference Include="..\HetVogeltje.Infrastructuur\HetVogeltje.Infrastructuur.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\" />
+  </ItemGroup>
+
 </Project>

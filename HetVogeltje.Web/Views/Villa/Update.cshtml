@@ -1,6 +1,6 @@
 ﻿@model HetVogeltje.Domein.Entities.Villa
 @{
-    ViewData["Title"] = "Nieuw huisje";
+    ViewData["Title"] = "Bewerk huisje";
 }
 
 <div class="w-100 card border-0 p-4">
@@ -8,7 +8,7 @@
     <div class="card-header bg-success bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="text-white py-2">Maak nieuw huisje</h2>
+                <h2 class="text-white py-2">Bewerk huisje @Model.Name</h2>
             </div>
 
         </div>
@@ -21,7 +21,7 @@
                 <div class="form-floating py-1 col-12">
 
                     <input asp-for="@Model.Name" class="form-control border shadow" />
-                    <label asp-for="@Model.Name"class="ms-2">Naam</label>
+                    <label asp-for="@Model.Name" class="ms-2">Naam</label>
                     <span asp-validation-for="@Model.Name" class="text-danger"></span>
                 </div>
 
@@ -67,9 +67,9 @@
                         <a asp-controller="Villa" asp-action="Index" class="btn btn-secondary w-100">
                             <i class="bi bi-x-circle"></i> Annuleren
                         </a>
-                     </div>
+                    </div>
                 </div>
-         
+
             </div>
 
 
@@ -82,6 +82,6 @@
 
     @{
 
-        <partial name="_ValidationScriptsPartial"/>
+        <partial name="_ValidationScriptsPartial" />
     }
-    }
+}
