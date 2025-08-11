@@ -45,6 +45,7 @@ namespace HetVogeltje.Web.Controllers
             Villa? villaFromDb = _context.Villas.FirstOrDefault(u => u.Id == villaId);
             if (villaFromDb == null)
             {
+                TempData["error"] = "Er is iets misgegaan bij het aanpassen van de villa.";
                 return RedirectToAction("Error", "Home");
             }
         
@@ -55,14 +56,12 @@ namespace HetVogeltje.Web.Controllers
         [HttpPost]
         public IActionResult Update(Villa obj)
         {
-            if (obj.Name == obj.Description)
+            
+            if (ModelState.IsValid && obj.Id > 0)
             {
-                ModelState.AddModelError("", "De naam en de omschrijving mogen niet hetzelfde zijn.");
-            }
-            if (ModelState.IsValid)
-            {
-                _context.Villas.Add(obj);
+                _context.Villas.Update(obj);
                 _context.SaveChanges();
+                TempData["success"] = "Het aanpassen van de villa, is gelukt.";
                 return RedirectToAction("Index", "Villa");
             }
             return View(obj);
@@ -70,17 +69,38 @@ namespace HetVogeltje.Web.Controllers
 
 
         //  Delete
+
         public IActionResult Delete(int villaId)
         {
-                       var villaFromDb = _context.Villas.FirstOrDefault(u => u.Id == villaId);
+            Villa? villaFromDb = _context.Villas.FirstOrDefault(u => u.Id == villaId);
             if (villaFromDb == null)
             {
+                TempData["error"] = "Er is iets misgegaan bij het verwijderen van de villa.";
                 return RedirectToAction("Error", "Home");
             }
-                _context.Villas.Remove(villaFromDb);
-            _context.SaveChanges();
-            return RedirectToAction("Index", "Villa");
-        }
 
+            return View(villaFromDb);
+
+        }
+               
+ 
+        [HttpPost]
+        public IActionResult Delete(Villa obj)
+        {
+            Villa? villaFromDb = _context.Villas.FirstOrDefault(u => u.Id == obj.Id);
+            if (villaFromDb is not null)
+            {
+                _context.Villas.Remove(villaFromDb) ;
+                _context.SaveChanges();
+                TempData["success"] = "Villa succesvol verwijderd!";
+                return RedirectToAction("Index", "Villa");
+            }
+            else
+            {
+                TempData["error"] = "Er is iets misgegaan bij het verwijderen van de villa.";
+                return RedirectToAction("Error", "Home");
+            }
+               
+        }
     }
 }
