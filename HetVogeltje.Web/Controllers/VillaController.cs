@@ -34,6 +34,7 @@ namespace HetVogeltje.Web.Controllers
             {
                 _context.Villas.Add(obj);
                 _context.SaveChanges();
+                TempData["Success"] = "Het toevoegen van de villa " + obj.Name + " is gelukt.";
                 return RedirectToAction("Index", "Villa");
             }
             return View(obj);
@@ -45,7 +46,7 @@ namespace HetVogeltje.Web.Controllers
             Villa? villaFromDb = _context.Villas.FirstOrDefault(u => u.Id == villaId);
             if (villaFromDb == null)
             {
-                TempData["error"] = "Er is iets misgegaan bij het aanpassen van de villa.";
+                TempData["Error"] = "Er is iets misgegaan bij het aanpassen van de villa.";
                 return RedirectToAction("Error", "Home");
             }
         
@@ -61,7 +62,7 @@ namespace HetVogeltje.Web.Controllers
             {
                 _context.Villas.Update(obj);
                 _context.SaveChanges();
-                TempData["success"] = "Het aanpassen van de villa, is gelukt.";
+                TempData["Success"] = "Het aanpassen van de villa " + obj.Name + " is gelukt.";
                 return RedirectToAction("Index", "Villa");
             }
             return View(obj);
@@ -73,9 +74,9 @@ namespace HetVogeltje.Web.Controllers
         public IActionResult Delete(int villaId)
         {
             Villa? villaFromDb = _context.Villas.FirstOrDefault(u => u.Id == villaId);
-            if (villaFromDb == null)
+            if (villaFromDb is null)
             {
-                TempData["error"] = "Er is iets misgegaan bij het verwijderen van de villa.";
+                TempData["Error"] = "Er is iets misgegaan bij het verwijderen van de villa.";
                 return RedirectToAction("Error", "Home");
             }
 
@@ -92,12 +93,12 @@ namespace HetVogeltje.Web.Controllers
             {
                 _context.Villas.Remove(villaFromDb) ;
                 _context.SaveChanges();
-                TempData["success"] = "Villa succesvol verwijderd!";
+                TempData["Success"] = "Villa succesvol verwijderd!";
                 return RedirectToAction("Index", "Villa");
             }
             else
             {
-                TempData["error"] = "Er is iets misgegaan bij het verwijderen van de villa.";
+                TempData["Error"] = "Er is iets misgegaan bij het verwijderen van de villa.";
                 return RedirectToAction("Error", "Home");
             }
                
