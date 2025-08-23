@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HetVogeltje.Infrastructuur.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20250726213724_seedhuisjesnaarDb")]
-    partial class seedhuisjesnaarDb
+    [Migration("20250823200716_newvillanumbertable")]
+    partial class newvillanumbertable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -113,6 +113,67 @@ namespace HetVogeltje.Infrastructuur.Migrations
                             Price = 150.0,
                             Sqft = 100
                         });
+                });
+
+            modelBuilder.Entity("HetVogeltje.Domein.Entities.VillaNumber", b =>
+                {
+                    b.Property<int>("Villa_Number")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SpecialeDetails")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VillaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Villa_Number");
+
+                    b.HasIndex("VillaId");
+
+                    b.ToTable("VillaNumbers");
+
+                    b.HasData(
+                        new
+                        {
+                            Villa_Number = 101,
+                            SpecialeDetails = "nummer 101",
+                            VillaId = 1
+                        },
+                        new
+                        {
+                            Villa_Number = 102,
+                            SpecialeDetails = "nummer 102",
+                            VillaId = 2
+                        },
+                        new
+                        {
+                            Villa_Number = 103,
+                            SpecialeDetails = "nummer 103",
+                            VillaId = 3
+                        },
+                        new
+                        {
+                            Villa_Number = 104,
+                            SpecialeDetails = "speciale villa nummer 104",
+                            VillaId = 4
+                        },
+                        new
+                        {
+                            Villa_Number = 105,
+                            SpecialeDetails = "105",
+                            VillaId = 5
+                        });
+                });
+
+            modelBuilder.Entity("HetVogeltje.Domein.Entities.VillaNumber", b =>
+                {
+                    b.HasOne("HetVogeltje.Domein.Entities.Villa", "Villa")
+                        .WithMany()
+                        .HasForeignKey("VillaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Villa");
                 });
 #pragma warning restore 612, 618
         }
