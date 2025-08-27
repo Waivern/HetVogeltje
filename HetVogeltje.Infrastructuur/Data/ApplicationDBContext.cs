@@ -36,7 +36,7 @@ namespace HetVogeltje.Infrastructuur.Data
                 new VillaNumber { Villa_Number = 102, VillaId = 2, SpecialeDetails = "nummer 102" },
                 new VillaNumber { Villa_Number = 103, VillaId = 3, SpecialeDetails = "nummer 103" },
                 new VillaNumber { Villa_Number = 104, VillaId = 4, SpecialeDetails = "speciale villa nummer 104" },
-                new VillaNumber { Villa_Number = 105, VillaId = 5, SpecialeDetails = "105" }
+                new VillaNumber { Villa_Number = 105, VillaId = 3, SpecialeDetails = "105" }
                 );
         }
     }

@@ -15,7 +15,7 @@
     <div class="card-header bg-success bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="text-white py-2">Onze huisjes</h2>
+                <h2 class="text-white py-2">De huisjes</h2>
             </div>
 
         </div>
@@ -24,8 +24,8 @@
         <div class="row pb-3">
             <div class="col-6 offset-6 text-end">
 
-                <a asp-controller="Villa" asp-action="Create" class="btn btn-secondary">
-                    <i class="bi bi-plus-circle"></i> Voeg een nieuw huisje toe
+                <a asp-controller="VillaNumber" asp-action="Create" class="btn btn-secondary">
+                    <i class="bi bi-plus-circle"></i> Voeg een nieuw huisnummer toe
 
                 </a>
             </div>
@@ -34,11 +34,10 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Naam</th>
-                    <th>Omschrijving</th>
-                    <th>Prijs per nacht</th>
-                    <th>Grootte</th>
-                    <th>Aantal personen</th>
+                    <th>Villa naam</th>
+                    <th>Huisnummer</th>
+                    <th>Speciale details</th>
+                   
                     <th>Acties</th>
                 </tr>
             </thead>
@@ -46,18 +45,16 @@
                 @foreach (var villaNumber in Model)
                 {
                     <tr>
-                        <td>@villaNumber.</td>
-                        <td>@villaNumber.Description</td>
-                        <td>@villaNumber.Price.ToString("C")</td>
-                        <td>@villaNumber.Sqft m2</td>
-                        <td>@villaNumber.Occupancy</td>
+                        <td>@villaNumber.VillaId</td>
+                        <td>@villaNumber.Villa_Number</td>
+                        <td>@villaNumber.SpecialeDetails</td>
                         <td>
                             <div class="w-75 btn-group" role="group">
 
-                                <a asp-controller="Villa" asp-action="Update" asp-route-villaId="@villaNumber.Villa_Number" class="btn btn-success mx-2">
+                                <a asp-controller="VillaNumber" asp-action="Update" asp-route-villaNumberId="@villaNumber.Villa_Number" class="btn btn-success mx-2">
                                     <i class="bi bi-pencil-square"></i> Bewerk
                                 </a>
-                                <a asp-controller="Villa" asp-action="Delete" asp-route-villaId="@villaNumber.Villa_Number" class="btn btn-danger mx-2">
+                                <a asp-controller="VillaNumber" asp-action="Delete" asp-route-villaNumberId="@villaNumber.Villa_Number" class="btn btn-danger mx-2">
                                     <i class="bi bi-trash-fill"></i> Delete
                                 </a>
                             </div>

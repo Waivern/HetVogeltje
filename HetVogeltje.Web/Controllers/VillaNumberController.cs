@@ -24,21 +24,21 @@ namespace HetVogeltje.Web.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Villa obj)
+        public IActionResult Create(VillaNumber obj)
         {
-         if (obj.Name == obj.Description)
-            {
-                ModelState.AddModelError("", "De naam en de omschrijving mogen niet hetzelfde zijn.");
-            }
+            //ModelState.Remove("Villa"); deze hoeft niet, omdat hij in de entity al niet wordt gecontroleerd.
             if (ModelState.IsValid)
             {
-                _context.Villas.Add(obj);
+                _context.VillaNumbers.Add(obj);
                 _context.SaveChanges();
-                TempData["Success"] = "Het toevoegen van de villa " + obj.Name + " is gelukt.";
-                return RedirectToAction("Index", "Villa");
+                TempData["Success"] = "Het toevoegen van het huisnummer is gelukt.";
+                return RedirectToAction("Index");
             }
             return View(obj);
+
         }
+        
+        
 
         //Edit
         public IActionResult Update(int villaId)
