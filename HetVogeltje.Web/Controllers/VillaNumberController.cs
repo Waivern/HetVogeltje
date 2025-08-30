@@ -1,6 +1,8 @@
 ﻿using HetVogeltje.Domein.Entities;
 using HetVogeltje.Infrastructuur.Data;
+using HetVogeltje.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HetVogeltje.Web.Controllers
 {
@@ -21,7 +23,23 @@ namespace HetVogeltje.Web.Controllers
 
         public IActionResult Create()
         {
-            return View();
+
+            VillaNumberVM villaNumberVM = new()
+            {
+                VillaList = _context.Villas.ToList().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                })
+            };
+            //IEnumerable<SelectListItem> list = _context.Villas.ToList().Select(i => new SelectListItem
+            //{
+            //    Text = i.Name,
+            //    Value = i.Id.ToString()
+            //});
+            //ViewData["VillaList"] = list;
+            //ViewBag.VillaList = list; --andere manier om data door te geven aan de view
+            return View(villaNumberVM);
         }
         [HttpPost]
         public IActionResult Create(VillaNumber obj)
