@@ -22,7 +22,7 @@ namespace HetVogeltje.Domein.Entities
         [ForeignKey("Villa")]
         public int VillaId { get; set; }
         [ValidateNever]
-        public Villa Villa { get; set; }
+        public Villa? Villa { get; set; }
         [Display(Name = "Speciale bijzonderheden")]
         public string? SpecialeDetails { get; set; }
     }

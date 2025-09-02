@@ -3,6 +3,7 @@ using HetVogeltje.Infrastructuur.Data;
 using HetVogeltje.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace HetVogeltje.Web.Controllers
 {
@@ -17,7 +18,7 @@ namespace HetVogeltje.Web.Controllers
         }
         public IActionResult Index()
         {
-            var villaNumber = _context.VillaNumbers.ToList();
+            var villaNumber = _context.VillaNumbers.Include(u=>u.Villa).ToList();
             return View(villaNumber);
         }
 
@@ -32,27 +33,28 @@ namespace HetVogeltje.Web.Controllers
                     Value = i.Id.ToString()
                 })
             };
-            //IEnumerable<SelectListItem> list = _context.Villas.ToList().Select(i => new SelectListItem
-            //{
-            //    Text = i.Name,
-            //    Value = i.Id.ToString()
-            //});
-            //ViewData["VillaList"] = list;
-            //ViewBag.VillaList = list; --andere manier om data door te geven aan de view
+         
             return View(villaNumberVM);
         }
         [HttpPost]
-        public IActionResult Create(VillaNumber obj)
+        public IActionResult Create(VillaNumberVM villaNumberVM)
         {
-            //ModelState.Remove("Villa"); deze hoeft niet, omdat hij in de entity al niet wordt gecontroleerd.
+            //Controle of het huisnummer al bestaat
+
+            if (_context.VillaNumbers.Any(u => u.Villa_Number == villaNumberVM.Huisnummer.Villa_Number))
+            {
+                TempData["Error"] = "Huisnummer: " + villaNumberVM.Huisnummer.Villa_Number + " bestaat al, aanmaken is niet gelukt.";
+                return RedirectToAction("Index");
+            }
+         //  ModelState.Remove("VillaNumber.Villa");// deze hoeft niet, omdat hij in de entity al niet wordt gecontroleerd.
             if (ModelState.IsValid)
             {
-                _context.VillaNumbers.Add(obj);
+                _context.VillaNumbers.Add(villaNumberVM.Huisnummer);
                 _context.SaveChanges();
                 TempData["Success"] = "Het toevoegen van het huisnummer is gelukt.";
                 return RedirectToAction("Index");
             }
-            return View(obj);
+            return View(villaNumberVM);
 
         }
         

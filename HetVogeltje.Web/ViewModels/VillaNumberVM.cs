@@ -1,6 +1,8 @@
 ﻿using HetVogeltje.Domein.Entities;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
+
+
 namespace HetVogeltje.Web.ViewModels
 {
     public class VillaNumberVM
