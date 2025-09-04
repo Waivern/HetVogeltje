@@ -1,0 +1,77 @@
+﻿@model VillaNumberVM
+@{
+    ViewData["Title"] = "aanpassen locatie";
+}
+
+<div class="w-100 card border-0 p-4">
+
+    <div class="card-header bg-success bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Bewerk huislocatie @Model.Huisnummer.Villa_Number</h2>
+            </div>
+
+        </div>
+    </div>
+    <div class="card-body border p-4">
+        <form method="post" class="row">
+
+            <div class="p-3">
+
+                <div class="form-floating py-1 col-12">
+                    <select asp-for="@Model.Huisnummer.VillaId" asp-items="@Model.VillaList" class="form-select border shadow">
+
+                        <option value="">-- Selecteer een villa --</option>
+                    </select>
+
+                    @* <select asp-for="@Model.VillaId" asp-items="@ViewBag.VillaList" class="form-select border shadow">
+
+                        <option value="">-- Selecteer een villa2 --</option>
+                    </select> *@
+
+                    <label asp-for="Huisnummer.VillaId" class="ms-2"></label>
+                    <span asp-validation-for="Huisnummer.VillaId" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating py-1 col-12">
+
+                    <input asp-for="Huisnummer.Villa_Number" class="form-control border shadow" />
+                    <label asp-for="Huisnummer.Villa_Number" class="ms-2"></label>
+                    <span asp-validation-for="Huisnummer.Villa_Number" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-1 col-12">
+
+                    <input asp-for="Huisnummer.SpecialeDetails" class="form-control border shadow" />
+                    <label asp-for="Huisnummer.SpecialeDetails" class="ms-2"></label>
+                    <span asp-validation-for="Huisnummer.SpecialeDetails" class="text-danger"></span>
+                </div>
+
+                <div class="row pt-2">
+                    <div class="col-6 col-md-3">
+
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="bi bi-check-circle"></i> Opslaan
+                        </button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="VillaNumber" asp-action="Index" class="btn btn-secondary w-100">
+                            <i class="bi bi-x-circle"></i> Annuleren
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+
+    @{
+
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
