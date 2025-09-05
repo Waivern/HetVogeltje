@@ -34,7 +34,7 @@ namespace HetVogeltje.Web.Controllers
                 })
             };
          
-            return View(villaNumberVM);
+            return View(villaNumberVM); 
         }
         [HttpPost]
         public IActionResult Create(VillaNumberVM villaNumberVM)
@@ -57,7 +57,7 @@ namespace HetVogeltje.Web.Controllers
                 _context.VillaNumbers.Add(villaNumberVM.Huisnummer);
                 _context.SaveChanges();
                 TempData["Success"] = "Het toevoegen van het huisnummer is gelukt.";
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
 
             if(HuisnummerBestaat)
@@ -102,51 +102,71 @@ namespace HetVogeltje.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(Villa obj)
+        public IActionResult Update(VillaNumberVM villaNumberVM)
         {
-            
-            if (ModelState.IsValid && obj.Id > 0)
+
+           
+            if (ModelState.IsValid)
             {
-                _context.Villas.Update(obj);
+                _context.VillaNumbers.Update(villaNumberVM.Huisnummer);
                 _context.SaveChanges();
-                TempData["Success"] = "Het aanpassen van de villa " + obj.Name + " is gelukt.";
-                return RedirectToAction("Index", "Villa");
+                TempData["Success"] = "Het bijwerken van de locatie is gelukt.";
+                return RedirectToAction(nameof(Index));
             }
-            return View(obj);
+                  
+            //Als het modelstate niet valid is, dan de lijst met villa's opnieuw ophalen
+            villaNumberVM.VillaList = _context.Villas.ToList().Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.Id.ToString()
+            });
+            //Vervolgens de view teruggeven met de ingevulde data van de viewmodel
+            return View(villaNumberVM);
+
         }
 
 
         //  Delete
 
-        public IActionResult Delete(int villaId)
+        public IActionResult Delete(int villaNumberId)
         {
-            Villa? villaFromDb = _context.Villas.FirstOrDefault(u => u.Id == villaId);
-            if (villaFromDb is null)
+            VillaNumberVM villaNumberVM = new()
             {
-                TempData["Error"] = "Er is iets misgegaan bij het verwijderen van de villa.";
+                VillaList = _context.Villas.ToList().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                }),
+                Huisnummer = _context.VillaNumbers.FirstOrDefault(u => u.Villa_Number == villaNumberId)
+            };
+
+
+
+            if (villaNumberVM.Huisnummer == null)
+            {
+                TempData["Error"] = "Er is iets misgegaan bij het openen van de locatie.";
                 return RedirectToAction("Error", "Home");
             }
-
-            return View(villaFromDb);
+            return View(villaNumberVM);
 
         }
                
  
         [HttpPost]
-        public IActionResult Delete(Villa obj)
+        public IActionResult Delete(VillaNumberVM villaNumberVM)
         {
-            Villa? villaFromDb = _context.Villas.FirstOrDefault(u => u.Id == obj.Id);
-            if (villaFromDb is not null)
+            VillaNumber? VillaNumberfromDB = _context.VillaNumbers.FirstOrDefault(u => u.Villa_Number == villaNumberVM.Huisnummer.Villa_Number);
+            if (VillaNumberfromDB is not null)
             {
-                _context.Villas.Remove(villaFromDb) ;
+                _context.VillaNumbers.Remove(VillaNumberfromDB) ;
                 _context.SaveChanges();
-                TempData["Success"] = "Villa succesvol verwijderd!";
-                return RedirectToAction("Index", "Villa");
+                TempData["Success"] = "Huisnummer succesvol verwijderd!";
+                return RedirectToAction(nameof(Index));
             }
             else
             {
-                TempData["Error"] = "Er is iets misgegaan bij het verwijderen van de villa.";
-                return RedirectToAction("Error", "Home");
+                TempData["Error"] = "Er is iets misgegaan bij het verwijderen van het huisnummer.";
+                return View();
             }
                
         }

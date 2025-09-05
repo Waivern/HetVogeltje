@@ -19,7 +19,7 @@
             <div class="p-3">
 
                 <div class="form-floating py-1 col-12">
-                    <select asp-for="@Model.Huisnummer.VillaId" asp-items="@Model.VillaList" class="form-select border shadow">
+                    <select disabled asp-for="@Model.Huisnummer.VillaId" asp-items="@Model.VillaList" class="form-select border shadow">
 
                         <option value="">-- Selecteer een villa --</option>
                     </select>
@@ -37,7 +37,7 @@
                 </div>
                 <div class="form-floating py-1 col-12">
 
-                    <input asp-for="Huisnummer.SpecialeDetails" class="form-control border shadow" />
+                    <input asp-for="Huisnummer.SpecialeDetails" disabled class="form-control border shadow" />
                     <label asp-for="Huisnummer.SpecialeDetails" class="ms-2"></label>
                     <span asp-validation-for="Huisnummer.SpecialeDetails" class="text-danger"></span>
                 </div>
@@ -45,8 +45,8 @@
                 <div class="row pt-2">
                     <div class="col-6 col-md-3">
 
-                        <button type="submit" class="btn btn-success w-100">
-                            <i class="bi bi-check-circle"></i> Opslaan
+                        <button type="submit" class="btn btn-danger w-100">
+                            <i class="bi bi-check-circle"></i> Verwijderen
                         </button>
                     </div>
                     <div class="col-6 col-md-3">

@@ -35,7 +35,7 @@ namespace HetVogeltje.Web.Controllers
                 _context.Villas.Add(obj);
                 _context.SaveChanges();
                 TempData["Success"] = "Het toevoegen van de villa " + obj.Name + " is gelukt.";
-                return RedirectToAction("Index", "Villa");
+                return RedirectToAction(nameof(Index));
             }
             return View(obj);
         }
@@ -63,7 +63,7 @@ namespace HetVogeltje.Web.Controllers
                 _context.Villas.Update(obj);
                 _context.SaveChanges();
                 TempData["Success"] = "Het aanpassen van de villa " + obj.Name + " is gelukt.";
-                return RedirectToAction("Index", "Villa");
+                return RedirectToAction(nameof(Index));
             }
             return View(obj);
         }
@@ -94,7 +94,7 @@ namespace HetVogeltje.Web.Controllers
                 _context.Villas.Remove(villaFromDb) ;
                 _context.SaveChanges();
                 TempData["Success"] = "Villa succesvol verwijderd!";
-                return RedirectToAction("Index", "Villa");
+                return RedirectToAction(nameof(Index));
             }
             else
             {
