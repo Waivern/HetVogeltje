@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HetVogeltje.Domein\HetVogeltje.Domein.csproj" />
+    <ProjectReference Include="..\HetVogeltje.Application\HetVogeltje.Application.csproj" />
   </ItemGroup>
 
 </Project>
