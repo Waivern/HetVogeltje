@@ -1,4 +1,5 @@
-﻿using HetVogeltje.Domein.Entities;
+﻿using HetVogeltje.Application.Common.Interfaces;
+using HetVogeltje.Domein.Entities;
 using HetVogeltje.Infrastructuur.Data;
 using HetVogeltje.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -10,15 +11,15 @@ namespace HetVogeltje.Web.Controllers
 
     public class VillaNumberController : Controller
     {
-        private readonly ApplicationDBContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public VillaNumberController(ApplicationDBContext context)
+        public VillaNumberController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            var villaNumber = _context.VillaNumbers.Include(u=>u.Villa).ToList();
+            var villaNumber = _unitOfWork.VillaNumber.GetAll(includeProperties: "Villa");
             return View(villaNumber);
         }
 
@@ -27,7 +28,7 @@ namespace HetVogeltje.Web.Controllers
 
             VillaNumberVM villaNumberVM = new()
             {
-                VillaList = _context.Villas.ToList().Select(i => new SelectListItem
+                VillaList = _unitOfWork.Villa.GetAll().Select(i => new SelectListItem
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
@@ -40,7 +41,7 @@ namespace HetVogeltje.Web.Controllers
         public IActionResult Create(VillaNumberVM villaNumberVM)
         {
             //Controle of het huisnummer al bestaat
-            bool HuisnummerBestaat = _context.VillaNumbers.Any(u => u.Villa_Number == villaNumberVM.Huisnummer.Villa_Number);
+            bool HuisnummerBestaat = _unitOfWork.VillaNumber.Any(u => u.Villa_Number == villaNumberVM.Huisnummer.Villa_Number);
 
 
             //Andere methode om te controleren of het huisnummer al bestaat
@@ -54,8 +55,8 @@ namespace HetVogeltje.Web.Controllers
             //  ModelState.Remove("VillaNumber.Villa");// deze hoeft niet, omdat hij in de entity al niet wordt gecontroleerd.
             if (ModelState.IsValid && !HuisnummerBestaat)
             {
-                _context.VillaNumbers.Add(villaNumberVM.Huisnummer);
-                _context.SaveChanges();
+                _unitOfWork.VillaNumber.Add(villaNumberVM.Huisnummer);
+                _unitOfWork.Save();
                 TempData["Success"] = "Het toevoegen van het huisnummer is gelukt.";
                 return RedirectToAction(nameof(Index));
             }
@@ -65,7 +66,7 @@ namespace HetVogeltje.Web.Controllers
                 TempData["Error"] = "Huisnummer: " + villaNumberVM.Huisnummer.Villa_Number + " bestaat al, aanmaken is niet gelukt.";            
             };
             //Als het modelstate niet valid is, dan de lijst met villa's opnieuw ophalen
-            villaNumberVM.VillaList = _context.Villas.ToList().Select(i => new SelectListItem
+            villaNumberVM.VillaList = _unitOfWork.Villa.GetAll().Select(i => new SelectListItem
             {
                 Text = i.Name,
                 Value = i.Id.ToString()
@@ -82,12 +83,12 @@ namespace HetVogeltje.Web.Controllers
         {
             VillaNumberVM villaNumberVM = new()
             {
-                VillaList = _context.Villas.ToList().Select(i => new SelectListItem
+                VillaList = _unitOfWork.Villa.GetAll().Select(i => new SelectListItem
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
                 }),
-                Huisnummer = _context.VillaNumbers.FirstOrDefault(u => u.Villa_Number == villaNumberId)
+                Huisnummer = _unitOfWork.VillaNumber.Get(u => u.Villa_Number == villaNumberId)
             };
                       
 
@@ -108,14 +109,14 @@ namespace HetVogeltje.Web.Controllers
            
             if (ModelState.IsValid)
             {
-                _context.VillaNumbers.Update(villaNumberVM.Huisnummer);
-                _context.SaveChanges();
+                _unitOfWork.VillaNumber.Update(villaNumberVM.Huisnummer);
+                _unitOfWork.Save();
                 TempData["Success"] = "Het bijwerken van de locatie is gelukt.";
                 return RedirectToAction(nameof(Index));
             }
                   
             //Als het modelstate niet valid is, dan de lijst met villa's opnieuw ophalen
-            villaNumberVM.VillaList = _context.Villas.ToList().Select(i => new SelectListItem
+            villaNumberVM.VillaList = _unitOfWork.Villa.GetAll().Select(i => new SelectListItem
             {
                 Text = i.Name,
                 Value = i.Id.ToString()
@@ -132,12 +133,12 @@ namespace HetVogeltje.Web.Controllers
         {
             VillaNumberVM villaNumberVM = new()
             {
-                VillaList = _context.Villas.ToList().Select(i => new SelectListItem
+                VillaList = _unitOfWork.Villa.GetAll().Select(i => new SelectListItem
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
                 }),
-                Huisnummer = _context.VillaNumbers.FirstOrDefault(u => u.Villa_Number == villaNumberId)
+                Huisnummer = _unitOfWork.VillaNumber.Get(u => u.Villa_Number == villaNumberId)
             };
 
 
@@ -155,11 +156,11 @@ namespace HetVogeltje.Web.Controllers
         [HttpPost]
         public IActionResult Delete(VillaNumberVM villaNumberVM)
         {
-            VillaNumber? VillaNumberfromDB = _context.VillaNumbers.FirstOrDefault(u => u.Villa_Number == villaNumberVM.Huisnummer.Villa_Number);
+            VillaNumber? VillaNumberfromDB = _unitOfWork.VillaNumber.Get(u => u.Villa_Number == villaNumberVM.Huisnummer.Villa_Number);
             if (VillaNumberfromDB is not null)
             {
-                _context.VillaNumbers.Remove(VillaNumberfromDB) ;
-                _context.SaveChanges();
+                _unitOfWork.VillaNumber.Remove(VillaNumberfromDB) ;
+                _unitOfWork.Save();
                 TempData["Success"] = "Huisnummer succesvol verwijderd!";
                 return RedirectToAction(nameof(Index));
             }

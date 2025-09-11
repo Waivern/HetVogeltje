@@ -12,19 +12,19 @@ using System.Threading.Tasks;
 
 namespace HetVogeltje.Infrastructuur.Repository
 {
-    public class VillaRepository : Repository<Villa>, IVillaRepository
+    public class VillaNumberRepository : Repository<VillaNumber>, IVillaNumberRepository
     {
         private readonly ApplicationDBContext _context;
 
-        public VillaRepository(ApplicationDBContext context) : base(context)
+        public VillaNumberRepository(ApplicationDBContext context) : base(context)
         {
             _context = context;
         }  
     
-        public void Update(Villa entity)
+        public void Update(VillaNumber entity)
         {
             //Villas hoeft niet, omdat we al in de context zitten.
-            _context.Villas.Update(entity);
+            _context.Update(entity);
         }
     }
 }
