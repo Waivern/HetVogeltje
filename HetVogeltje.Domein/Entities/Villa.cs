@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HetVogeltje.Domein.Entities
 {
@@ -19,6 +21,8 @@ namespace HetVogeltje.Domein.Entities
         public int Sqft { get; set; }
         [Range(1, 20)]
         public int Occupancy { get; set; }
+        [NotMapped]
+        public IFormFile? Image { get; set; }
         [Display(Name = "Afbeelding link")]
         public string? ImagePath { get; set; }
         public DateTime? CreatedDate { get; set; }

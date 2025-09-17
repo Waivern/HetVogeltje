@@ -9,10 +9,11 @@ namespace HetVogeltje.Web.Controllers
     public class VillaController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public VillaController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public VillaController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
@@ -33,7 +34,23 @@ namespace HetVogeltje.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                _unitOfWork.Villa.Add(obj);
+
+                if (obj.Image != null)
+                {
+                    string filename= Guid.NewGuid().ToString() + Path.GetExtension(obj.Image.FileName);
+                    string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, @"Images\Villa");
+
+                    using (var fileStream = new FileStream(Path.Combine(imagePath,filename),FileMode.Create))
+                    {
+                        obj.Image.CopyTo(fileStream);
+                    }
+                    obj.ImagePath = @"\Images\Villa\" + filename;
+                }
+                else
+                {
+                    obj.ImagePath = "https://placehold.co/600x404";
+                }
+                    _unitOfWork.Villa.Add(obj);
                 _unitOfWork.Save();
                 TempData["Success"] = "Het toevoegen van de villa " + obj.Name + " is gelukt.";
                 return RedirectToAction(nameof(Index));
@@ -61,6 +78,29 @@ namespace HetVogeltje.Web.Controllers
             
             if (ModelState.IsValid && obj.Id > 0)
             {
+
+                if (obj.Image != null)
+                {
+                    string filename = Guid.NewGuid().ToString() + Path.GetExtension(obj.Image.FileName);
+                    string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, @"Images\Villa");
+
+
+                    if(!string.IsNullOrEmpty(obj.ImagePath))
+                    {
+                        var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, obj.ImagePath.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+                    using (var fileStream = new FileStream(Path.Combine(imagePath, filename), FileMode.Create))
+                    {
+                        obj.Image.CopyTo(fileStream);
+                    }
+                    obj.ImagePath = @"\Images\Villa\" + filename;
+                }
+            
+
                 _unitOfWork.Villa.Update(obj);
                 _unitOfWork.Save();
                 TempData["Success"] = "Het aanpassen van de villa " + obj.Name + " is gelukt.";
@@ -90,8 +130,21 @@ namespace HetVogeltje.Web.Controllers
         public IActionResult Delete(Villa obj)
         {
             Villa? villaFromDb = _unitOfWork.Villa.Get(u => u.Id == obj.Id);
+
+                       
+            
+
+
             if (villaFromDb is not null)
             {
+                if (!string.IsNullOrEmpty(villaFromDb.ImagePath))
+                {
+                    var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, villaFromDb.ImagePath.TrimStart('\\'));
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
                 _unitOfWork.Villa.Remove(villaFromDb) ;
                 _unitOfWork.Save();
                 TempData["Success"] = "Villa succesvol verwijderd!";
