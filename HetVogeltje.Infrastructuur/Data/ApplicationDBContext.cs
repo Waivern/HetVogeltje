@@ -15,6 +15,7 @@ namespace HetVogeltje.Infrastructuur.Data
         }
         public DbSet<Villa> Villas { get; set; }
         public DbSet<VillaNumber> VillaNumbers { get; set; }
+        public DbSet<Voorziening> Voorzieningen { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,6 +38,14 @@ namespace HetVogeltje.Infrastructuur.Data
                 new VillaNumber { Villa_Number = 103, VillaId = 3, SpecialeDetails = "nummer 103" },
                 new VillaNumber { Villa_Number = 104, VillaId = 4, SpecialeDetails = "speciale villa nummer 104" },
                 new VillaNumber { Villa_Number = 105, VillaId = 3, SpecialeDetails = "105" }
+                );
+
+            modelBuilder.Entity<Voorziening>().HasData(
+                new Voorziening { Id = 1, Naam = "Zwembad", SpecialeDetails = "Groot zwembad", VillaId = 1 },
+                new Voorziening { Id = 2, Naam = "Tennisbaan", SpecialeDetails = "Buiten tennisbaan", VillaId = 2 },
+                new Voorziening { Id = 3, Naam = "Fitnessruimte", SpecialeDetails = "Volledig uitgeruste fitnessruimte", VillaId = 3 },
+                new Voorziening { Id = 4, Naam = "Spa", SpecialeDetails = "Ontspannende spa faciliteiten", VillaId = 4 },
+                new Voorziening { Id = 5, Naam = "Barbecueplaats", SpecialeDetails = "Buiten barbecueplaats", VillaId = 5 }
                 );
         }
     }
