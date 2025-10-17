@@ -13,11 +13,14 @@ namespace HetVogeltje.Infrastructuur.Repository
         private readonly ApplicationDBContext _context;
         public IVillaRepository Villa { get; private set; }
         public IVillaNumberRepository VillaNumber { get; private set; }
+        public IVoorzieningRepository Voorziening { get; private set; }
+
         public UnitOfWork(ApplicationDBContext db)
         {
             _context = db;
             Villa = new VillaRepository(_context);
             VillaNumber = new VillaNumberRepository(_context);
+            Voorziening = new VoorzieningRepository(_context);
         }
 
         public void Save()

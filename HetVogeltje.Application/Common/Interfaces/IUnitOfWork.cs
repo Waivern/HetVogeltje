@@ -11,6 +11,7 @@ namespace HetVogeltje.Application.Common.Interfaces
 
         IVillaRepository Villa { get; }
         IVillaNumberRepository VillaNumber { get; }
+        IVoorzieningRepository Voorziening { get; }
         void Save();
     }
 }
